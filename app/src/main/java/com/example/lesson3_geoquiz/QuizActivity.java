@@ -3,12 +3,15 @@ package com.example.lesson3_geoquiz;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class QuizActivity extends AppCompatActivity {
+    private static final String KEY_INDEX = "index";
+
     private Button mTrueButton;
     private Button mFalseButton;
     // updating the controller layer
@@ -29,6 +32,11 @@ public class QuizActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
+
+        //miro si hay estado guardado (chapter 3)
+        if (savedInstanceState != null) {
+            mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
+        }
 
         // chapter 2 wiring up the textview
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
@@ -66,7 +74,6 @@ public class QuizActivity extends AppCompatActivity {
                 updateQuestion();
             }
         });
-
         updateQuestion();
     }
 
@@ -85,6 +92,13 @@ public class QuizActivity extends AppCompatActivity {
         }
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT)
                 .show();
+    }
+    //guardo el estado (chapter 3)
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        Log.i("Ciclo de vida", "onSaveInstanceState");
+        savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
     }
 
 }
